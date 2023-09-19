@@ -1,3 +1,12 @@
+---
+export interface Props {
+  name: string;
+}
+const {name} = Astro.props
+---
+
+<hello-world name={name} />
+
 <script>
   import WebComponent from "web-component-base";
   import ClientComponent from "../decorators/ClientComponent";
@@ -12,13 +21,15 @@
     name = 'World';
     data: undefined | SomeData;
     onInit() {
-      const data = deserialize('app-config');
-      this.data = data;
-      console.log(data);
+      this.data = deserialize('app-config');
+      console.log(this.data);
       this.onclick = () => {
         this.name = 'World';
         this.render(); // TODO: create function that returns Proxy, call render under the hood when changed
       }
+    }
+    onChanges(changes: Record<string, any>) {
+      console.log(changes);
     }
     get template() {
       return `<h1>Hello ${this.name}!</h1><span>${this.data?.hello}</span>`
