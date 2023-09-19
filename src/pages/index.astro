@@ -1,16 +1,23 @@
 ---
-
+import HelloWorld from "../client-components/hello-world.astro";
 ---
 
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WC Base Test</title>
+    <HelloWorld />
+  </head>
+  <body>
+    <hello-world name="Ayo"></hello-world>
+    <script>
+      const helloWorld = document.querySelector("hello-world");
+      setTimeout(() => {
+        helloWorld.setAttribute("name", "Ayo zzzZzzz");
+      }, 2500);
+      console.log("heyyy");
+    </script>
+  </body>
 </html>
