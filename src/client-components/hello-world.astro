@@ -5,34 +5,51 @@ export interface Props {
 const {name} = Astro.props
 ---
 
-<hello-world name={name} />
+<hello-world name={name}>
+  <span>show when no js</span>
+</hello-world>
 
 <script>
   import WebComponent from "web-component-base";
   import ClientComponent from "../decorators/ClientComponent";
   import { deserialize } from "@ayco/astro-resume";
   import type { SomeData } from "../pages/index.astro";
+  import type { PropertyChange } from "../decorators/PropertyChange";
 
   @ClientComponent({
     selector: "hello-world",
     observedProperties: ["name"],
   })
-  class HelloWorld extends WebComponent {
+  class WhatEverClassName extends WebComponent {
     name = 'World';
     data: undefined | SomeData;
-    onInit() {
+    onInit(): void {
       this.data = deserialize('app-config');
-      console.log(this.data);
+      let counter = 0
       this.onclick = () => {
-        this.name = 'World';
-        this.render(); // TODO: create function that returns Proxy, call render under the hood when changed
+        this.name = 'World ' + counter++;
+        this.render();
       }
     }
-    onChanges(changes: Record<string, any>) {
-      console.log(changes);
+    onChanges(changes: PropertyChange): void {
+      if (changes.property === 'name') {
+        console.log('name changed', changes.currentValue)
+      }
     }
     get template() {
-      return `<h1>Hello ${this.name}!</h1><span>${this.data?.hello}</span>`
+      return `<h1>Hello ${this.name}!</h1><span>${this.data?.hello || ''}</span>`
     }
   }
 </script>
+
+<style is:inline>
+  hello-world {
+    display: block;
+    padding: 1rem;
+    border: 1px solid black;
+  }
+
+  hello-world h1 {
+    cursor: pointer;
+  }
+</style>
