@@ -1,12 +1,8 @@
 <script>
   import WebComponent from "web-component-base";
+  import ClientComponent from "../decorators/ClientComponent";
 
-  type PropertyChange = {
-    property: string;
-    previousValue: any;
-    currentValue: any;
-  };
-
+  @ClientComponent('hello-world')
   class HelloWorld extends WebComponent {
     name = "World";
     static properties = ["name", "emotion"];
@@ -15,13 +11,11 @@
       this.onclick = () => {
         this.name = "Web Components";
         this.render();
-      }
+      };
     }
 
     get template() {
       return `<h1>Hello ${this.name}!</h1>`;
     }
   }
-
-  customElements.define("hello-world", HelloWorld);
 </script>
