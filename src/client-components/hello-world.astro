@@ -1,21 +1,27 @@
 <script>
   import WebComponent from "web-component-base";
   import ClientComponent from "../decorators/ClientComponent";
+  import { deserialize } from "@ayco/astro-resume";
+  import type { SomeData } from "../pages/index.astro";
 
-  @ClientComponent('hello-world')
+  @ClientComponent({
+    selector: "hello-world",
+    observedProperties: ["name"],
+  })
   class HelloWorld extends WebComponent {
-    name = "World";
-    static properties = ["name", "emotion"];
-
+    name = 'World';
+    data: undefined | SomeData;
     onInit() {
+      const data = deserialize('app-config');
+      this.data = data;
+      console.log(data);
       this.onclick = () => {
-        this.name = "Web Components";
-        this.render();
-      };
+        this.name = 'World';
+        this.render(); // TODO: create function that returns Proxy, call render under the hood when changed
+      }
     }
-
     get template() {
-      return `<h1>Hello ${this.name}!</h1>`;
+      return `<h1>Hello ${this.name}!</h1><span>${this.data?.hello}</span>`
     }
   }
 </script>

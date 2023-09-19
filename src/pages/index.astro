@@ -1,5 +1,10 @@
 ---
+import Serialize from "@ayco/astro-resume";
 import HelloWorld from "../client-components/hello-world.astro";
+const someData = {
+  hello: 'world'
+}
+export type SomeData = typeof someData;
 ---
 
 <!doctype html>
@@ -11,13 +16,13 @@ import HelloWorld from "../client-components/hello-world.astro";
     <HelloWorld />
   </head>
   <body>
-    <hello-world name="Ayo"></hello-world>
+    <Serialize data={someData} id="app-config" />
+    <hello-world name="Ayosss" data={someData}></hello-world>
     <script>
       const helloWorld = document.querySelector("hello-world");
       setTimeout(() => {
         helloWorld.setAttribute("name", "Ayo zzzZzzz");
       }, 2500);
-      console.log("heyyy");
     </script>
   </body>
 </html>
